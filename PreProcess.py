@@ -24,8 +24,11 @@ To call in command line:
 import numpy as np
 import time
 import os
+import os.path
+import glob
 import sys
 import argparse
+import configparser
 
 from dataloader import DataLoader
 from getwavedata import GetWaveData
@@ -35,15 +38,28 @@ from getwavedata import GetWaveData
 ####################### Command line parser ###################################
 ###############################################################################
 
-parser = argparse.ArgumentParser(description='Process some integers.')
+
+'''
+# Take datapath and config file as inputs in command line
+parser = argparse.ArgumentParser(description='Processes list-mode waveform files from DAFCA.')
+parser.add_argument('datapath', metavar='datapath', type=str, 
+                   help='The path from which all data will be loaded')
+parser.add_argument('options', metavar='options', type=str, 
+                   help='Processing options')
+
+config = parser.parse_args()
+
 
 
 ###############################################################################
-####################### User Inputs ###########################################
+####################### Unpack configurations #################################
 ###############################################################################
 
+datapathList = 'path.config'
 
-
+with open(config.datapath) as datapathList:
+    read_data = datapathList.read()
+options = config.options
 
 
 
@@ -51,3 +67,99 @@ parser = argparse.ArgumentParser(description='Process some integers.')
 ###############################################################################
 ###############################################################################
 ###############################################################################
+'''
+
+### Read in options file for configuring analysis settings ####################
+
+options = 'C:\\Users\\giha\\Documents\\GetWaveData\\config.ini\\'
+
+config = configparser.ConfigParser()
+config.read(options)
+    
+# Setup data info
+# Directories
+data_directory = config['Directories']['data_directory']
+data_file_name = config['Directories']['data_file_name']
+pywaves_directory = config['Directories']['pywaves_directory']
+    
+# Digitizer
+dataFormatStr = config['Digitizer']['dataFormat']
+nSamples = int(config['Digitizer']['samples_per_waveform'])
+ns_per_sample = int(config['Digitizer']['ns_per_sample'])
+number_of_bits = int(config['Digitizer']['number_of_bits'])
+dynamic_range_volts = float(config['Digitizer']['dynamic_range_volts'])
+polarity = int(config['Digitizer']['polarity'])
+baselineOffset = int(config['Digitizer']['baseline_offset'])
+nBaselineSamples = int(config['Digitizer']['baseline_samples'])
+nCh = int(config['Digitizer']['number_of_channels'])
+nWavesPerLoad = int(config['Data Management']['waves_per_load'])
+nWaves = int(config['Data Management']['waves_per_folder']) # per folder
+startFolder = int(config['Data Management']['start_folder'])
+nFolders = int(config['Data Management']['number_of_folders'])
+unevenFactor = int(config['Data Management']['uneven_factor'])
+cfdFraction = float(config['Pulse Processing']['cfd_fraction'])
+integralEnd = int(config['Pulse Processing']['integral_end'])
+totalIntegralStart = int(config['Pulse Processing']['total_integral_start'])
+tailIntegralStart = int(config['Pulse Processing']['tail_integral_start'])
+applyCRRC4 = bool(int(config['Pulse Processing']['apply_crrc4']))
+CRRC4Tau = float(config['Pulse Processing']['crrc4_shaping_time'])
+
+
+
+
+# Read in path config file
+with open('path.config') as datapathList:
+    dataList = datapathList.read().splitlines()
+
+
+
+# Get number of paths specified in config file
+pathNum = len(dataList)
+
+
+### Function for finding all data files in a path
+### Input: Path
+### Output: List of paths of all datafiles
+def dataFind(path):
+    ls = [os.path.join(root, filename)
+    for root, dirs, files in sorted(os.walk(path))
+    for filename in files
+    if filename.endswith('.dat')]    
+    ls = sorted(ls, key=lambda x: int(os.path.split( os.path.split(x)[0])[1]))
+    return ls
+
+#ls = sorted(dataList, key=lambda x: int(filter(str.isdigit, x)))
+#ls = dataList.sort( key=lambda x: int(''.join(filter(str.isdigit, x))))
+
+
+test = 0
+# Iterate over 
+for i in range(pathNum):
+    path = dataList[i]
+    test = dataFind(path)
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
