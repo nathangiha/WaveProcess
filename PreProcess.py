@@ -25,8 +25,6 @@ import numpy as np
 import time
 import os
 import os.path
-import glob
-import sys
 import argparse
 import configparser
 
@@ -71,11 +69,26 @@ options = config.options
 
 ### Read in options file for configuring analysis settings ####################
 
-options = 'C:\\Users\\giha\\Documents\\GetWaveData\\config.ini\\'
+options = 'C:\\Users\\giha\\Documents\\GetWaveData\\config.ini'
 
 config = configparser.ConfigParser()
 config.read(options)
+
+
+'''
+Why would I handle this myself when getwavedata already does it?
+Instead adapt getwavedata function to take in all waves from all files
+From config file, don't need:
+    -datafile name (should be unused)
+    -data directory (has to become input of function)
+    -data mgmt section
     
+    Should I run it for each datafile individually? I think that'll work.
+    The many for loops shouldn't matter, as cycling through those should not be
+    the bottleneck for this program
+
+
+
 # Setup data info
 # Directories
 data_directory = config['Directories']['data_directory']
@@ -103,12 +116,12 @@ totalIntegralStart = int(config['Pulse Processing']['total_integral_start'])
 tailIntegralStart = int(config['Pulse Processing']['tail_integral_start'])
 applyCRRC4 = bool(int(config['Pulse Processing']['apply_crrc4']))
 CRRC4Tau = float(config['Pulse Processing']['crrc4_shaping_time'])
-
+'''
 
 
 
 # Read in path config file
-with open('path.config') as datapathList:
+with open('C:\\Users\\giha\\Documents\\GetWaveData\\path.config') as datapathList:
     dataList = datapathList.read().splitlines()
 
 
