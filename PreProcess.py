@@ -146,10 +146,18 @@ def dataFind(path):
 
 
 test = 0
-# Iterate over 
-for i in range(pathNum):
-    path = dataList[i]
-    test = dataFind(path)
+# Iterate over paths
+for n in range(pathNum):
+    # Get path
+    path = dataList[n]
+    
+    # Get list of datafiles in path
+    fileList = dataFind(path)
+    
+    # Analyze each datafile
+    for f in len(fileList):
+        file = fileList[f]
+        
     
 
 
