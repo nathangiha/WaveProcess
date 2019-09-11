@@ -13,7 +13,7 @@ import platform
 import time
 import configparser
 
-def GetWaveData(configFileName, getZeroCrossingIntegral=True):
+def GetWaveDataR(configFileName, directoryName, fileNum = 1, getZeroCrossingIntegral=True):
     startTime = time.time()
     print("Running GetWaveData!")
     print("Starting at " + time.strftime('%H:%M:%S'))
@@ -22,7 +22,9 @@ def GetWaveData(configFileName, getZeroCrossingIntegral=True):
     
     # Setup data info
     # Directories
-    data_directory = config['Directories']['data_directory']
+    
+    data_directory = directoryName # New
+    
     data_file_name = config['Directories']['data_file_name']
     pywaves_directory = config['Directories']['pywaves_directory']
     
@@ -36,10 +38,16 @@ def GetWaveData(configFileName, getZeroCrossingIntegral=True):
     baselineOffset = int(config['Digitizer']['baseline_offset'])
     nBaselineSamples = int(config['Digitizer']['baseline_samples'])
     nCh = int(config['Digitizer']['number_of_channels'])
-    nWavesPerLoad = int(config['Data Management']['waves_per_load'])
-    nWaves = int(config['Data Management']['waves_per_folder']) # per folder
+    
+    # nWavesPerLoad = int(config['Data Management']['waves_per_load'])
+    nWavesPerLoad = 10000 # Random big number
+    # nWaves = int(config['Data Management']['waves_per_folder']) # per folder
+    nWaves = 1000000
+    # Let's just do all of the folders!
     startFolder = int(config['Data Management']['start_folder'])
-    nFolders = int(config['Data Management']['number_of_folders'])
+    nFolders = fileNum
+    # nFolders = int(config['Data Management']['number_of_folders'])
+    
     unevenFactor = int(config['Data Management']['uneven_factor'])
     cfdFraction = float(config['Pulse Processing']['cfd_fraction'])
     integralEnd = int(config['Pulse Processing']['integral_end'])
@@ -62,8 +70,17 @@ def GetWaveData(configFileName, getZeroCrossingIntegral=True):
         directory_separator  = '\\'
     else:
         directory_separator  = '/'
-    nLoads = int(nWaves/nWavesPerLoad)
-    chBufferSize = int(nFolders*nWaves*unevenFactor/nCh)
+        
+    # Initialize data arrays
+    dataFile1 = data_directory + directory_separator + str(1) + directory_separator + data_file_name
+    datloader1 = DataLoader(dataFile1,dataFormat,nSamples)
+    nWavesIn1 = datloader1.GetNumberOfWavesInFile()
+    print(str(nWavesIn1))
+    
+    nLoads = int(nWavesIn1/nWavesPerLoad)
+    if nLoads < 1:
+        nLoads = 1
+    chBufferSize = int(nFolders*nWavesIn1*unevenFactor/nCh)
     VperLSB = dynamic_range_volts/(2**number_of_bits)
     fileTimeGap = 2**43 # Note: no more than 3 hours per measurement!
     
@@ -89,6 +106,7 @@ def GetWaveData(configFileName, getZeroCrossingIntegral=True):
         fullDFileName = data_directory + directory_separator + str(f) + directory_separator + data_file_name
         datloader = DataLoader(fullDFileName,dataFormat,nSamples)
         nWavesInFile = datloader.GetNumberOfWavesInFile()
+        nWaves = nWavesInFile + 1
         if (nWavesInFile < nWaves):
             print('Warning: requested more waves than exists in file!')
             loadsInFile = int(np.ceil(nWavesInFile/nWavesPerLoad))

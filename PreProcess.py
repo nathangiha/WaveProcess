@@ -6,7 +6,7 @@ Created on Wed Sep  4 12:39:12 2019
 email: giha@umich.edu
 
 General script for reading in DAFCA data files
-Uses Will Steinberger's DataLoader and GetWaveData functions to extract info
+Uses Marc Ruch's DataLoader and a modified GetWaveData to extract info
 Optimized for high-volume, command line use
 
 Input:
@@ -29,7 +29,7 @@ import argparse
 import configparser
 
 from dataloader import DataLoader
-from getwavedata import GetWaveData
+from getwavedataRefitted import GetWaveDataR
 
 
 ###############################################################################
@@ -70,52 +70,26 @@ options = config.options
 ### Read in options file for configuring analysis settings ####################
 
 options = 'C:\\Users\\giha\\Documents\\GetWaveData\\config.ini'
+datapathList = 'path.config'
 
-config = configparser.ConfigParser()
-config.read(options)
 
 
 '''
-Why would I handle this myself when getwavedata already does it?
-Instead adapt getwavedata function to take in all waves from all files
 From config file, don't need:
     -datafile name (should be unused)
     -data directory (has to become input of function)
     -data mgmt section
     
+    9/10
     Should I run it for each datafile individually? I think that'll work.
     The many for loops shouldn't matter, as cycling through those should not be
     the bottleneck for this program
-
-
-
-# Setup data info
-# Directories
-data_directory = config['Directories']['data_directory']
-data_file_name = config['Directories']['data_file_name']
-pywaves_directory = config['Directories']['pywaves_directory']
     
-# Digitizer
-dataFormatStr = config['Digitizer']['dataFormat']
-nSamples = int(config['Digitizer']['samples_per_waveform'])
-ns_per_sample = int(config['Digitizer']['ns_per_sample'])
-number_of_bits = int(config['Digitizer']['number_of_bits'])
-dynamic_range_volts = float(config['Digitizer']['dynamic_range_volts'])
-polarity = int(config['Digitizer']['polarity'])
-baselineOffset = int(config['Digitizer']['baseline_offset'])
-nBaselineSamples = int(config['Digitizer']['baseline_samples'])
-nCh = int(config['Digitizer']['number_of_channels'])
-nWavesPerLoad = int(config['Data Management']['waves_per_load'])
-nWaves = int(config['Data Management']['waves_per_folder']) # per folder
-startFolder = int(config['Data Management']['start_folder'])
-nFolders = int(config['Data Management']['number_of_folders'])
-unevenFactor = int(config['Data Management']['uneven_factor'])
-cfdFraction = float(config['Pulse Processing']['cfd_fraction'])
-integralEnd = int(config['Pulse Processing']['integral_end'])
-totalIntegralStart = int(config['Pulse Processing']['total_integral_start'])
-tailIntegralStart = int(config['Pulse Processing']['tail_integral_start'])
-applyCRRC4 = bool(int(config['Pulse Processing']['apply_crrc4']))
-CRRC4Tau = float(config['Pulse Processing']['crrc4_shaping_time'])
+    9/11
+    Nah, this dumb af. The dataFind function is still useful, just use it to
+    find the number of folders and then feed that to GetWaveData
+
+
 '''
 
 
@@ -151,34 +125,21 @@ for n in range(pathNum):
     # Get path
     path = dataList[n]
     
-    # Get list of datafiles in path
+    # Get list of datafiles in path, then find number of files
     fileList = dataFind(path)
     
-    # Analyze each datafile
-    for f in len(fileList):
-        file = fileList[f]
+    # Feed options.config, data directory, and number of files to GetWaveDataR
+    data = GetWaveDataR(options, path, fileNum =len(fileList) )
+    test = data
+    
+    
+    
+    
+    
+    
+    
         
     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
