@@ -13,6 +13,7 @@ import platform
 import time
 import configparser
 
+
 def GetWaveDataR(configFileName, directoryName, fileNum = 1, getZeroCrossingIntegral=True):
     startTime = time.time()
     print("Running GetWaveData!")
@@ -146,5 +147,5 @@ def GetWaveDataR(configFileName, directoryName, fileNum = 1, getZeroCrossingInte
                     chCount[ch] += 1
     endTime = time.time()
     runTime = endTime - startTime
-    print("GetWaveData took {} s".format(runTime))
+    print("GetWaveDataR took {} s".format(runTime))
     return chCount, ph, amp, tailInt, totalInt, cfd, ttt, extras, fullTime, flags, rms

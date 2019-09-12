@@ -27,6 +27,7 @@ import os
 import os.path
 import argparse
 import configparser
+import datetime
 
 from dataloader import DataLoader
 from getwavedataRefitted import GetWaveDataR
@@ -67,6 +68,14 @@ options = config.options
 ###############################################################################
 '''
 
+### Set separator based on OS
+if platform.system() is 'Windows':
+    directory_separator  = '\\'
+else:
+    directory_separator  = '/'
+
+
+
 ### Read in options file for configuring analysis settings ####################
 
 options = 'C:\\Users\\giha\\Documents\\GetWaveData\\config.ini'
@@ -88,6 +97,10 @@ From config file, don't need:
     9/11
     Nah, this dumb af. The dataFind function is still useful, just use it to
     find the number of folders and then feed that to GetWaveData
+    
+    This was a good way to do it. getwavedataRefitted now properly interacts
+    with PreProcess. Next step is to export the data into an appropriately
+    formatted list-mode file
 
 
 '''
@@ -130,7 +143,84 @@ for n in range(pathNum):
     
     # Feed options.config, data directory, and number of files to GetWaveDataR
     data = GetWaveDataR(options, path, fileNum =len(fileList) )
-    test = data
+    
+    # Get rid of zeros
+    chCount = data[0]
+    
+    data = np.stack((data[1].flatten(), data[2].flatten(), data[3].flatten(),
+     data[4].flatten(), data[5].flatten(), data[8].flatten(), data[10].flatten()
+     )).T
+    
+    
+    
+    
+    # Export data
+    exportFile = os.path.split(path)[0]  + 'data.p'
+
+    fout = open(exportFile, 'w')
+    fout.close()
+    
+    # Open to append
+    fout = open(exportFile, 'a')
+    
+    now = datetime.datetime.now()
+    fout.write('# This datafile was generated '+ str(now) + '\n')
+    fout.write('# datapath: ' +path + '\n')
+    fout.write('# options: ' +options + '\n')
+    fout.write('# [# waves in each channel]' + '\n')
+    fout.write('# [PI] [PH] [tail] [total] [cfd] [ttt] [rms]' + '\n\n')
+    
+    np.savetxt(fout,chCount, newline = '   ', fmt='%1.0f')
+    fout.write('\n')
+    
+    for c in range(len(chCount)):
+        if chCount[c] < 1:
+            pass
+        else:
+            linesPerCh = int(len(data)/len(chCount))
+            startInd = c*linesPerCh
+            chArray = data[ startInd : startInd + chCount[c]][:]
+            np.savetxt(fout, chArray, fmt='%2.5e %4.2e %2.5e %2.5e %3.5e %14e %1f ' )
+            
+            
+        
+        
+    
+    
+        
+    fout.close()  
+    '''
+    Data structure looks like this:
+        
+    [header]
+    [original data path]
+    [options file path]
+    [# waves/channel] e.g. 4 5 6
+        
+    [body]
+    [PI] [PH] [tail] [total] [cfd] [ttt] [rms]
+    [PI] [PH] [tail] [total] [cfd] [ttt] [rms]
+    [PI] [PH] [tail] [total] [cfd] [ttt] [rms]
+        [PI] [PH] [tail] [total] [cfd] [ttt] [rms]
+        
+        [PI] [PH] [tail] [total] [cfd] [ttt] [rms]
+        [PI] [PH] [tail] [total] [cfd] [ttt] [rms]
+        [PI] [PH] [tail] [total] [cfd] [ttt] [rms]
+        [PI] [PH] [tail] [total] [cfd] [ttt] [rms]
+        [PI] [PH] [tail] [total] [cfd] [ttt] [rms]
+
+        [PI] [PH] [tail] [total] [cfd] [ttt] [rms]
+        [PI] [PH] [tail] [total] [cfd] [ttt] [rms]
+        [PI] [PH] [tail] [total] [cfd] [ttt] [rms]
+        [PI] [PH] [tail] [total] [cfd] [ttt] [rms]
+        [PI] [PH] [tail] [total] [cfd] [ttt] [rms]
+        [PI] [PH] [tail] [total] [cfd] [ttt] [rms]
+
+  
+        '''
+
+    
+    
     
     
     
