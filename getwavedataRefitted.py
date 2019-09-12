@@ -27,7 +27,7 @@ def GetWaveDataR(configFileName, directoryName, fileNum = 1, getZeroCrossingInte
     data_directory = directoryName # New
     
     data_file_name = config['Directories']['data_file_name']
-    pywaves_directory = config['Directories']['pywaves_directory']
+    #pywaves_directory = config['Directories']['pywaves_directory']
     
     # Digitizer
     dataFormatStr = config['Digitizer']['dataFormat']
@@ -41,9 +41,9 @@ def GetWaveDataR(configFileName, directoryName, fileNum = 1, getZeroCrossingInte
     nCh = int(config['Digitizer']['number_of_channels'])
     
     # nWavesPerLoad = int(config['Data Management']['waves_per_load'])
-    nWavesPerLoad = 10000 # Random big number
+    nWavesPerLoad = 10000 # Chosen pretty arbitrarily
     # nWaves = int(config['Data Management']['waves_per_folder']) # per folder
-    nWaves = 1000000
+    nWaves = 1000000 # Large number
     # Let's just do all of the folders!
     startFolder = int(config['Data Management']['start_folder'])
     nFolders = fileNum
@@ -58,7 +58,7 @@ def GetWaveDataR(configFileName, directoryName, fileNum = 1, getZeroCrossingInte
     CRRC4Tau = float(config['Pulse Processing']['crrc4_shaping_time'])
     
     # Load pywaves
-    sys.path.extend([pywaves_directory])
+   # sys.path.extend([pywaves_directory])
     from dataloader import DataLoader
     from waveform import Waveform
     

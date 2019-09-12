@@ -38,7 +38,6 @@ from getwavedataRefitted import GetWaveDataR
 ###############################################################################
 
 
-'''
 # Take datapath and config file as inputs in command line
 parser = argparse.ArgumentParser(description='Processes list-mode waveform files from DAFCA.')
 parser.add_argument('datapath', metavar='datapath', type=str, 
@@ -54,33 +53,33 @@ config = parser.parse_args()
 ####################### Unpack configurations #################################
 ###############################################################################
 
-datapathList = 'path.config'
+#datapathList = 'path.config'
 
 with open(config.datapath) as datapathList:
-    read_data = datapathList.read()
+    dataList = datapathList.read().splitlines()
 options = config.options
 
 
 
-
-###############################################################################
-###############################################################################
-###############################################################################
+'''
+with open('C:\\Users\\giha\\Documents\\GetWaveData\\path.config') as datapathList:
+    dataList = datapathList.read().splitlines()
 '''
 
-### Set separator based on OS
-if platform.system() is 'Windows':
-    directory_separator  = '\\'
-else:
-    directory_separator  = '/'
+
+
+###############################################################################
+###############################################################################
+###############################################################################
+
 
 
 
 ### Read in options file for configuring analysis settings ####################
-
+'''
 options = 'C:\\Users\\giha\\Documents\\GetWaveData\\config.ini'
 datapathList = 'path.config'
-
+'''
 
 
 '''
@@ -106,10 +105,6 @@ From config file, don't need:
 '''
 
 
-
-# Read in path config file
-with open('C:\\Users\\giha\\Documents\\GetWaveData\\path.config') as datapathList:
-    dataList = datapathList.read().splitlines()
 
 
 
