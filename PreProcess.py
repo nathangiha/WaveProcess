@@ -175,7 +175,7 @@ for n in range(pathNum):
             linesPerCh = int(len(data)/len(chCount))
             startInd = c*linesPerCh
             chArray = data[ startInd : startInd + chCount[c]][:]
-            np.savetxt(fout, chArray, fmt='%2.5e %4.2e %2.5e %2.5e %3.5e %14e %1f ' )
+            np.savetxt(fout, chArray, fmt='%.18e' )
             
             
         

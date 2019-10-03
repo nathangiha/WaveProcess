@@ -27,8 +27,8 @@ from getwavedata import GetWaveData
 # Import data and analyze with GetWaveData
 #data = GetWaveData("C:/Users/Giha/Documents/GetWaveData/configg.ini")
 #datastil = GetWaveData("C:/Users/Giha/Documents/GetWaveData/configs.ini")
-dataNa = chNa
-dataCs = chCs
+dataNa = GetWaveData("C:/Users/Giha/Documents/GetWaveData/configg.ini")
+#dataCs = chCs
 
 # Get index of real pulses
 rNa0 = np.nonzero(dataNa[8][0][:])
@@ -75,7 +75,7 @@ binedges = np.arange(start = -10, stop = 10, step = 0.1)
 timeHist, temp = np.histogram(tme, bins = binedges)
 
 # Normalize to time
-measTime = 1800 # seconds
+measTime = 50400 # seconds
 timeHist = timeHist / measTime
 
 # Plot histograms
@@ -88,7 +88,7 @@ plt.bar(centers, timeHist, align='center', alpha = 0.75, width = width, label = 
 plt.xlabel(r'$\Delta t$')
 plt.ylabel(r'Count Rate $(s^{-1})$')
 
-plt.axis([-2.5,2.5,0,10])
+plt.axis([-5,5,0,10])
 
 plt.show()
 

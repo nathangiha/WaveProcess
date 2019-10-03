@@ -76,7 +76,7 @@ def GetWaveDataR(configFileName, directoryName, fileNum = 1, getZeroCrossingInte
     dataFile1 = data_directory + directory_separator + str(1) + directory_separator + data_file_name
     datloader1 = DataLoader(dataFile1,dataFormat,nSamples)
     nWavesIn1 = datloader1.GetNumberOfWavesInFile()
-    print(str(nWavesIn1))
+    # print(str(nWavesIn1))
     
     nLoads = int(nWavesIn1/nWavesPerLoad)
     if nLoads < 1:
