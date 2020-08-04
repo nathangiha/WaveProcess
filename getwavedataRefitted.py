@@ -116,7 +116,7 @@ def GetWaveDataR(configFileName, directoryName, fileNum = 1, getZeroCrossingInte
         else:
             loadsInFile = nLoads
             lastLoad = nWavesPerLoad
-        if nWavesInFile % 2 == 0 or int(nCh) == 2:
+        if nWavesInFile % 2 == 0 or nWavesInFile % 2 == 1 or int(nCh) == 2:
             for load in range(loadsInFile):
                 if(load == loadsInFile-1):
                     wavesThisLoad = lastLoad

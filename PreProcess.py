@@ -196,20 +196,18 @@ for n in range(pathNum):
     [PI] [PH] [tail] [total] [cfd] [ttt] [rms]
     [PI] [PH] [tail] [total] [cfd] [ttt] [rms]
     [PI] [PH] [tail] [total] [cfd] [ttt] [rms]
-        [PI] [PH] [tail] [total] [cfd] [ttt] [rms]
-        
-        [PI] [PH] [tail] [total] [cfd] [ttt] [rms]
-        [PI] [PH] [tail] [total] [cfd] [ttt] [rms]
-        [PI] [PH] [tail] [total] [cfd] [ttt] [rms]
-        [PI] [PH] [tail] [total] [cfd] [ttt] [rms]
-        [PI] [PH] [tail] [total] [cfd] [ttt] [rms]
-
-        [PI] [PH] [tail] [total] [cfd] [ttt] [rms]
-        [PI] [PH] [tail] [total] [cfd] [ttt] [rms]
-        [PI] [PH] [tail] [total] [cfd] [ttt] [rms]
-        [PI] [PH] [tail] [total] [cfd] [ttt] [rms]
-        [PI] [PH] [tail] [total] [cfd] [ttt] [rms]
-        [PI] [PH] [tail] [total] [cfd] [ttt] [rms]
+    [PI] [PH] [tail] [total] [cfd] [ttt] [rms]   
+    [PI] [PH] [tail] [total] [cfd] [ttt] [rms]
+    [PI] [PH] [tail] [total] [cfd] [ttt] [rms]
+    [PI] [PH] [tail] [total] [cfd] [ttt] [rms]
+    [PI] [PH] [tail] [total] [cfd] [ttt] [rms]
+    [PI] [PH] [tail] [total] [cfd] [ttt] [rms]
+    [PI] [PH] [tail] [total] [cfd] [ttt] [rms]
+    [PI] [PH] [tail] [total] [cfd] [ttt] [rms]
+    [PI] [PH] [tail] [total] [cfd] [ttt] [rms]
+    [PI] [PH] [tail] [total] [cfd] [ttt] [rms]
+    [PI] [PH] [tail] [total] [cfd] [ttt] [rms]
+    [PI] [PH] [tail] [total] [cfd] [ttt] [rms]
 
   
         '''
