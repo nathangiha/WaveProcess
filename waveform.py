@@ -14,6 +14,9 @@ class Waveform:
         self.blsSamples = -1
         self.badPulse = False
         self.baselined = False
+        
+    def Polarize(self,polarity):
+        self.polarity = polarity
 
     def SetSamples(self,newSamples):
         self.samples = newSamples

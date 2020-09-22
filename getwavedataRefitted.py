@@ -35,7 +35,9 @@ def GetWaveDataR(configFileName, directoryName, fileNum = 1, getZeroCrossingInte
     ns_per_sample = int(config['Digitizer']['ns_per_sample'])
     number_of_bits = int(config['Digitizer']['number_of_bits'])
     dynamic_range_volts = float(config['Digitizer']['dynamic_range_volts'])
-    polarity = int(config['Digitizer']['polarity'])
+    polarity0 = int(config['Digitizer']['polarity0']) # Polarity of first several channels
+    p0ch = int(config['Digitizer']['p0ch']) # Number of channels to apply first polarity to
+    polarity1 = int(config['Digitizer']['polarity1']) # Polarity of remaining channels
     baselineOffset = int(config['Digitizer']['baseline_offset'])
     nBaselineSamples = int(config['Digitizer']['baseline_samples'])
     nCh = int(config['Digitizer']['number_of_channels'])
@@ -99,7 +101,10 @@ def GetWaveDataR(configFileName, directoryName, fileNum = 1, getZeroCrossingInte
     flags = np.zeros((nCh,chBufferSize), dtype=np.uint32)
     
     # Setup data loader
-    waveform = Waveform(np.zeros(nSamples), polarity, baselineOffset, nBaselineSamples)
+    waveform = Waveform(np.zeros(nSamples), polarity0, baselineOffset, nBaselineSamples)
+    print( 'polarity0 =' + str( polarity0 ) )
+    print( 'p0ch = ' + str( p0ch) )
+    print( 'polarity1 =' + str( polarity1 ) )
     
     # Queue up waves
     for f in range(startFolder, startFolder+nFolders):
@@ -126,6 +131,11 @@ def GetWaveDataR(configFileName, directoryName, fileNum = 1, getZeroCrossingInte
                 for w in range(wavesThisLoad):
                     ch = waves[w]['Channel']
                     waveform.SetSamples(waves[w]['Samples'])
+                    if (ch >= p0ch):
+                        waveform.Polarize(polarity1)
+                    else:
+                        waveform.Polarize(polarity0)
+                    #print(str( waveform.polarity))
                     if applyCRRC4:
                         waveform.ApplyCRRC4(ns_per_sample, CRRC4Tau)
                     if getZeroCrossingIntegral:
